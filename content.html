@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Content</title>
+    <link href="styles/styles.css" rel="stylesheet">
+</head>
+<body>
+<form class="asset-form">
+    <label class="field">Title: <input name="title"></label>
+    <label class="field">Description: <input name="description"></label>
+    <label class="field">Asset: <input type="file" name="asset"></label>
+    <input type="submit" value="Create Asset">
+</form>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Created At</th>
+        <th>Created By</th>
+        <th>Size</th>
+        <th>Type</th>
+        <th>Extension</th>
+        <th>Tags</th>
+        <th>Rating</th>
+        <th>Thumbnail</th>
+    </tr>
+    </thead>
+</table>
+<script src="scripts/pouchdb/pouchdb.js"></script>
+<script src="scripts/pouchdb/pouchdb.find.js"></script>
+<script src="scripts/scripts.js"></script>
+</body>
+</html>

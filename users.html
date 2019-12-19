@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link href="styles/styles.css" rel="stylesheet">
+</head>
+<body>
+<form class="user-form">
+    <label class="field">Name: <input name="name"></label>
+    <label class="field">Email: <input type="email" name="email"></label>
+    <label class="field">Password: <input type="password" name="password"></label>
+    <label class="field">Confirm Password: <input type="password" name="passwordConfirmation"></label>
+    <input type="submit" value="Create User">
+</form>
+<table class="table users-table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody class="table-body">
+    </tbody>
+</table>
+<script src="scripts/pouchdb/pouchdb.js"></script>
+<script src="scripts/pouchdb/pouchdb.find.js"></script>
+<script src="scripts/date-fns.js"></script>
+<script src="scripts/scripts.js"></script>
+</body>
+</html>
