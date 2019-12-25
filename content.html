@@ -9,7 +9,10 @@
 <form class="asset-form">
     <label class="field">Title: <input name="title"></label>
     <label class="field">Description: <input name="description"></label>
-    <label class="field">Asset: <input type="file" name="asset"></label>
+    <label class="field">Tags: <input name="tags"></label>
+    <label class="field">Asset: <input type="file" name="asset" accept="video/mp4,video/x-m4v,video/*,audio/ogg,audio/mp3,audio/*;capture=microphone,application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+text/plain, application/pdf"></label>
+    <label class="field">Thumbnail: <input type="file" name="thumbnail" accept="image/x-png,image/gif,image/jpeg" /></label>
     <input type="submit" value="Create Asset">
 </form>
 <table class="table">
@@ -31,6 +34,7 @@
 </table>
 <script src="scripts/pouchdb/pouchdb.js"></script>
 <script src="scripts/pouchdb/pouchdb.find.js"></script>
+<script src="scripts/date-fns.js"></script>
 <script src="scripts/scripts.js"></script>
 </body>
 </html>

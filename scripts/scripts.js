@@ -77,7 +77,11 @@ class UserRepository {
     console.log(response);
   }
 
-  getOne(user) {}
+  async getOne(id) {
+    const response = await this.db.get(id);
+
+    return response;
+  }
 
   update(user) {}
 
@@ -125,14 +129,26 @@ class UserService {
       })
   }
 
+  readCurrentUser() {
+    let user = localStorage.getItem('user');
+    if (user) return JSON.parse(user);
+
+    return null;
+  }
+
+  async readOne(id) {
+    const user = await this.userRepository.getOne(id);
+    console.log(user);
+  }
+
 }
 
 const userService = new UserService(userRepository);
 
-const submit = document.querySelector('.user-form input[type=submit]');
+const userSubmit = document.querySelector('.user-form input[type=submit]');
 
-if (submit) {
-  submit.onclick = userService.saveUser;
+if (userSubmit) {
+  userSubmit.onclick = userService.saveUser;
 }
 
 function createUserRow({id:userId, doc:user}) {
@@ -193,6 +209,7 @@ class AssetRepository {
   }
 
   async add(asset) {
+    const thumbnailURL = await readThumbnail(asset.thumbnail);
     const response = await this.db.post({
       title: asset.title,
       description: asset.description,
@@ -200,11 +217,15 @@ class AssetRepository {
       type: DATA_TYPES.ASSET,
       createdBy: asset.user,
       tags: asset.tags,
-      rating: asset.rating,
+      rating: asset.rating || [],
       _attachments: {
         [asset.file.name]: {
           content_type: asset.file.type,
           data: asset.file
+        },
+        thumbnail: {
+          content_type: asset.thumbnail.type,
+          data: thumbnailURL
         }
       }
     });
@@ -212,6 +233,43 @@ class AssetRepository {
   }
 
 }
+
+const assetRepository = new AssetRepository();
+
+class AssetService {
+
+  constructor(assetRepository, userService) {
+    this.assetRepository = assetRepository;
+    this.userService = userService;
+    this.saveAsset = this.saveAsset.bind(this);
+  }
+
+  async saveAsset(e) {
+    e.preventDefault();
+    const title = document.querySelector('.asset-form input[name=title]').value;
+    const description = document.querySelector('.asset-form input[name=description]').value;
+    const tags = document.querySelector('.asset-form input[name=tags]').value;
+    const asset = document.querySelector('.asset-form input[name=asset]').files[0];
+    const thumbnail = document.querySelector('.asset-form input[name=thumbnail]').files[0];
+    const user = this.userService.readCurrentUser();
+
+    this.assetRepository.add({title, description, tags, file: asset, user, rating: [], thumbnail});
+  }
+
+}
+
+function readThumbnail(file) {
+  return new Promise((ok, fail) => {
+    const reader = new FileReader();
+    reader.onloadend = function() {
+      ok(reader.result);
+    };
+    reader.onerror = fail;
+    reader.readAsDataURL(file);
+  });
+}
+
+const assetService = new AssetService(assetRepository, userService);
 
 const file = document.querySelector('.asset-form input[type=file]');
 
@@ -221,4 +279,10 @@ if (file) {
 
 function fileChange({target: {files}}) {
   console.log(files[0])
+}
+
+const assetSubmit = document.querySelector('.asset-form input[type=submit]');
+
+if (assetSubmit) {
+  assetSubmit.onclick = assetService.saveAsset;
 }
